@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💩</title>
+    <style>
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #6371b7;
+            margin: 0;
+            padding: 0px;
+            }
+
+            /* Hide sections by default */
+            #startMenu, #endMenu, #boardContainer {
+            display: none;
+            }
+            .menu {
+            margin-top: 100px;
+            }
+            .button-row {
+            margin: 10px;
+            }
+            button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 55px;
+            cursor: pointer;
+            border-radius: 16px;
+            border: none;
+            color: #fff;
+            background: #ff9986;
+            }
+            button:hover{background: #f87ea8; transition:0.2s}
+
+            .board {
+            display: grid;
+            grid-template-columns: repeat(7, 80px);
+            gap: 8px;
+            justify-content: center;
+            margin-top: 20px;
+            }
+            .cell {
+            width: 80px;
+            height: 80px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid #000;
+            }
+            .red {
+            background-color: #f23548;
+            }
+            .yellow {
+            background-color: #F2CF35;
+            }
+            
+
+    ::selection {
+      background-color: #f46e39;
+      color: #fff;
+    }
+
+    ::-webkit-scrollbar {
+      background: #ddd;
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 10px #00000070;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #3d5d9e;
+      border-radius: 10px;
+    }
+
+    nav {
+      display: flex;
+      height: 70px;
+      width: 100%;
+      background: #fff;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 50px 0 100px;
+      flex-wrap: wrap;
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+      border-top: 2px solid rgba(255,255,255,0.2);
+      position: sticky;
+      top: 0;
+      border-bottom-color: #3d5d9e;
+      z-index: 3;
+    }
+
+    @media screen and (min-width: 851px) {
+      nav {
+        width: 100%;
+      }
+    }
+
+    @media screen and (max-width: 850px) {
+      nav {
+        width: 100%;
+        position: static;
+      }
+    }
+
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    nav ul li {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      margin-left: 3vw;
+    }
+
+    nav ul li a {
+      color: #000;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      padding: 8px 15px;
+      border-radius: 5px;
+      letter-spacing: 1px;
+    }
+
+    nav ul li a:hover {
+      background: #3d5d9e;
+      color: #fff;
+    }
+
+    nav .menu-btn i {
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      display: none;
+    }
+
+    @media (max-width: 920px) {
+      nav .menu-btn i {
+        display: block;
+      }
+
+      nav ul {
+        position: fixed;
+        top: 80px;
+        left: -300%;
+        background: #111;
+        height: 100vh;
+        width: 100%;
+        text-align: center;
+        display: block;
+        transition: all 0.3s ease;
+      }
+
+      nav ul li a:hover {
+        background: none;
+      }
+    }
+
+    .hovv:hover {
+      color: #fff;
+    }
+
+    .popup .overlay {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
+      z-index: 4;
+      display: none;
+    }
+
+    .popup .content {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      border-radius: 16px;
+      transform: translate(-50%, -50%) scale(0);
+      background: #fff;
+      color: #3d5d9e;
+      width: 500px;
+      height: 400px;
+      z-index: 5;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      font-family: "Open Sans", sans-serif;
+    }
+
+    @media screen and (max-width: 450px) {
+      .popup .content {
+        width: 300px;
+        height: 450px;
+      }
+    }
+
+    .popup .close-btn {
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: 30px;
+      height: 30px;
+      background: #222;
+      color: #fff;
+      font-size: 25px;
+      font-weight: 600;
+      line-height: 30px;
+      text-align: center;
+      border-radius: 50%;
+    }
+
+    .popup.active .overlay {
+      display: block;
+    }
+
+    .popup.active .content {
+      transition: all 300ms ease-in-out;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #PopPop {
+      position: fixed;
+      top: -35px;
+      left: 95%;
+      transform: translate(-98%, -5%);
+      border: none;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      background: #3d5d9e;
+      padding: 5px 3px;
+      font-size: 18px;
+      font-weight: 500;
+      padding: 8px 15px;
+      border-radius: 5px;
+      letter-spacing: 1px;
+      z-index: 3;
+    }
+
+    #PopPop:hover {
+      opacity: 0.87;
+      transition: 0.3s;
+    }
+
+    #a {
+      color: #000;
+      text-decoration: none;
+      padding: 20px;
+    }
+
+    #a:hover {
+      background: #3d5d9e;
+      color: #fff;
+    }
+    </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a class="hovv" href="../index.php">Home</a></li>
+      <li><a class="hovv" href="../pacman.html">Pacman</a></li>
+      <li><a class="hovv" href="../patience.html">Patience</a></li>
+      <li><a class="hovv" href="../snake.html">Snake</a></li>
+      <li><a class="hovv" href="../2048.html">2048</a></li>
+      <li><a class="hovv" href="../lunarlander.html">LunarLander</a></li>
+      <li><a class="hovv" href="../chess.html">Chess</a></li>
+      <li><a class="hovv" href="../spaceinvador.html">Space</a></li>
+    </ul>
+    <div id="WTF"></div>
+  </nav>
+
+  <!-- Main content container: the game is centered here -->
+  <div class="main-content">
+
+    <!-- Popup example -->
+    <div class="popup" id="popup-1">
+      <div class="overlay"></div>
+      <div class="content">
+        <div class="close-btn" onclick="togglePopup()">&times;</div>
+        <br><br><br><br>
+        <h1>Bonathan is the only language</h1><br><br><br><br>
+      </div>
+    </div>
+
+    <button id="PopPop" onclick="togglePopup()">Language</button>
+    <script type="text/javascript">
+      function togglePopup() {
+        document.getElementById("popup-1").classList.toggle("active");
+      }
+    </script>
+
+    <!-- 1) Start Menu -->
+    <div id="startMenu" class="menu">
+        <h1>How hard do you like it?</h1>
+        <div class="button-row">
+        <button onclick="startGame(3)">Tender</button>
+        <button onclick="startGame(4)">A little spank</button>
+        <button onclick="startGame(5)">Rough</button>
+        <button onclick="startGame(7)">Medical team needed</button>
+        </div>
+    </div>
+
+    <div id="boardContainer">
+        <h1>Imatumi</h1>
+        <div id="gameBoard" class="board"></div>
+        <!-- If you want a quick button to return to menu or reset -->
+        <button onclick="goToEndMenu('cancel')">Quit</button>
+    </div>
+
+    <div id="endMenu" class="menu">
+        <h1 id="endMessage">Game Over!</h1>
+        <button onclick="goToStartMenu()">Play Again</button>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:5000';
+        let board = Array(6).fill().map(() => Array(7).fill(0));
+        let playerTurn = true;
+        let gameEnded = false;
+    
+        window.onload = function() {
+          // Show start menu by default
+          document.getElementById('startMenu').style.display = 'block';
+        };
+    
+        function startGame(depth) {
+          // 1) Set difficulty on server
+          fetch(`${API_URL}/set_difficulty`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ depth })
+          })
+          .then(res => res.json())
+          .then(data => {
+            // 2) Restart and show board
+            restartGame().then(() => {
+              showBoard();
+            });
+          })
+          .catch(err => console.error(err));
+        }
+    
+        // Called once difficulty is chosen in startGame()
+        function showBoard() {
+          document.getElementById('startMenu').style.display = 'none';
+          document.getElementById('endMenu').style.display = 'none';
+          document.getElementById('boardContainer').style.display = 'block';
+        }
+    
+        function goToEndMenu(winner) {
+          // Hide board
+          document.getElementById('boardContainer').style.display = 'none';
+          // Show end menu
+          const endMenu = document.getElementById('endMenu');
+          endMenu.style.display = 'block';
+    
+          let msg = '';
+          if (winner === 'cancel') {
+            // If user manually quit
+            msg = 'Game aborted.';
+          } else if (winner === 'player') {
+            msg = 'You win!';
+          } else if (winner === 'ai') {
+            msg = 'AI wins!';
+          } else {
+            msg = 'It\'s a draw or unknown result.';
+          }
+          document.getElementById('endMessage').textContent = msg;
+          gameEnded = true;
+        }
+    
+        function goToStartMenu() {
+          // Return to start menu
+          document.getElementById('endMenu').style.display = 'none';
+          document.getElementById('startMenu').style.display = 'block';
+        }
+    
+        async function restartGame() {
+          // Call your server's /restart
+          await fetch(`${API_URL}/restart`, { method: 'POST' });
+          // Then locally reset
+          board = Array(6).fill().map(() => Array(7).fill(0));
+          createBoard();
+          playerTurn = true;
+          gameEnded = false;
+        }
+    
+        function createBoard() {
+          const gameBoard = document.getElementById('gameBoard');
+          gameBoard.innerHTML = '';
+          for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 7; col++) {
+              const cell = document.createElement('div');
+              cell.classList.add('cell');
+              cell.dataset.row = row;
+              cell.dataset.col = col;
+              cell.addEventListener('click', () => {
+                if (playerTurn && !gameEnded) makeMove(col);
+              });
+              gameBoard.appendChild(cell);
+            }
+          }
+          updateBoard();
+        }
+    
+        function updateBoard() {
+          const cells = document.querySelectorAll('.cell');
+          for (let row = 0; row < 6; row++) {
+            for (let col = 0; col < 7; col++) {
+              let cell = cells[row * 7 + col];
+              cell.style.backgroundColor = '';
+              cell.classList.remove('red', 'yellow');
+              if (board[row][col] === 1) {
+                cell.classList.add('red');
+              } else if (board[row][col] === 2) {
+                cell.classList.add('yellow');
+              }
+            }
+          }
+        }
+    
+        function highlightWinningCells(winningCells, winner) {
+          const highlightColor = winner === 1 ? '#ff5b99' : '#ffc259';
+          for (let [r, c] of winningCells) {
+            const cell = document.querySelector(`.cell[data-row='${r}'][data-col='${c}']`);
+            if (cell) cell.style.backgroundColor = highlightColor;
+          }
+        }
+    
+        function makeMove(column) {
+          if (!playerTurn || gameEnded) return;
+          playerTurn = false;
+    
+          // 1) local update (so user sees piece drop immediately)
+          let row = -1;
+          for (let r = 5; r >= 0; r--) {
+            if (board[r][column] === 0) {
+              row = r;
+              break;
+            }
+          }
+          if (row === -1) {
+            // Column full
+            playerTurn = true;
+            return;
+          }
+          board[row][column] = 1; // Red piece
+          updateBoard();
+    
+          // 2) server update
+          fetch(`${API_URL}/move`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ column })
+          })
+          .then(res => res.json())
+          .then(data => {
+            // Check if player just won
+            if (data.status === 'win') {
+              highlightWinningCells(data.winningCells, data.winner);
+              setTimeout(() => {
+                goToEndMenu('player');
+              }, 500);
+              return;
+            }
+    
+            // If no player win, let AI move
+            setTimeout(() => {
+              fetch(`${API_URL}/move`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ column: -1 })
+              })
+              .then(res => res.json())
+              .then(aiData => {
+                if (aiData.board) {
+                  board = aiData.board;
+                  updateBoard();
+                }
+                if (aiData.status === 'win') {
+                  highlightWinningCells(aiData.winningCells, aiData.winner);
+                  setTimeout(() => {
+                    goToEndMenu('ai');
+                  }, 500);
+                }
+                playerTurn = true;
+              })
+              .catch(err => {
+                console.error('AI move error:', err);
+                playerTurn = true;
+              });
+            }, 500);
+          })
+          .catch(err => {
+            console.error('Player move error:', err);
+            playerTurn = true;
+          });
+        }
+      </script>
+</body>
+</html>
